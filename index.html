@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
+<title>Marcaje Casino Base Pacifico · AquaChile Melinka</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,700;0,800;1,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#445563;
+    --navy-dark:#31404c;
+    --orange:#EB5F0A;
+    --warm-gray:#EFE9E5;
+    --teal:#2CAFA4;
+    --green:#6D8D24;
+    --ink:#2b3338;
+    --white:#ffffff;
+    --radius:18px;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    font-family:'DM Sans',sans-serif;
+    background:var(--warm-gray);
+    color:var(--ink);
+    min-height:100vh;
+    min-height:100dvh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+    -webkit-font-smoothing:antialiased;
+  }
+  .mono{font-family:'DM Mono',monospace;}
+
+  .card{
+    width:100%;
+    max-width:420px;
+    background:var(--white);
+    border-radius:24px;
+    overflow:hidden;
+    box-shadow:0 12px 40px rgba(49,64,76,0.18);
+  }
+
+  header.top{
+    background:var(--navy);
+    color:var(--white);
+    padding:22px 24px 26px;
+    position:relative;
+    overflow:hidden;
+  }
+  header.top .brand{
+    font-size:12px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    opacity:.75;
+    font-weight:500;
+  }
+  header.top h1{
+    margin:6px 0 0;
+    font-size:22px;
+    font-weight:800;
+    letter-spacing:-0.01em;
+  }
+  .wave{
+    position:absolute;
+    bottom:-1px; left:0; right:0;
+    height:18px;
+  }
+
+  .body-pad{ padding:26px 24px 24px; }
+
+  /* ---- Pantalla registro ---- */
+  .field{ margin-bottom:16px; }
+  .field label{
+    display:block;
+    font-size:12px;
+    font-weight:700;
+    letter-spacing:.04em;
+    text-transform:uppercase;
+    color:var(--navy);
+    margin-bottom:6px;
+  }
+  .field input{
+    width:100%;
+    padding:14px 14px;
+    border:2px solid #e2ddd7;
+    border-radius:12px;
+    font-size:16px;
+    font-family:'DM Sans',sans-serif;
+    background:var(--warm-gray);
+    color:var(--ink);
+    outline:none;
+    transition:border-color .15s;
+  }
+  .field input:focus{ border-color:var(--teal); }
+  .field .err{
+    display:none;
+    color:#c0392b;
+    font-size:12.5px;
+    margin-top:6px;
+    font-weight:500;
+  }
+  .field.invalid input{ border-color:#c0392b; }
+  .field.invalid .err{ display:block; }
+  .field .hint{ font-size:11.5px; color:#9a948c; margin-top:5px; }
+
+  .check-field{
+    display:flex; align-items:flex-start; gap:11px;
+    margin-bottom:22px; padding:13px 14px;
+    background:var(--warm-gray); border-radius:12px;
+    cursor:pointer;
+  }
+  .check-field input[type="checkbox"]{
+    appearance:none; -webkit-appearance:none;
+    width:22px; height:22px; flex:none; margin-top:1px;
+    border:2px solid #cfc8c1; border-radius:6px;
+    background:var(--white); cursor:pointer;
+    display:flex; align-items:center; justify-content:center;
+    transition:background .15s, border-color .15s;
+  }
+  .check-field input[type="checkbox"]:checked{
+    background:var(--teal); border-color:var(--teal);
+  }
+  .check-field input[type="checkbox"]:checked::after{
+    content:'✓'; color:white; font-size:14px; font-weight:700;
+  }
+  .check-field .txt{ font-size:13.5px; line-height:1.4; }
+  .check-field .txt strong{ display:block; font-size:14px; color:var(--ink); }
+  .check-field .txt span{ color:#8a8478; font-size:12px; }
+
+  .badge-externo{
+    display:inline-block; font-size:11px; font-weight:700;
+    color:#a3651e; background:#fbeedc; padding:3px 9px;
+    border-radius:20px; margin-left:6px; vertical-align:middle;
+  }
+
+  .btn{
+    width:100%;
+    border:none;
+    border-radius:14px;
+    padding:17px 18px;
+    font-size:16px;
+    font-weight:700;
+    font-family:'DM Sans',sans-serif;
+    cursor:pointer;
+    transition:transform .08s, opacity .15s, background .15s;
+  }
+  .btn:active{ transform:scale(0.98); }
+  .btn-primary{ background:var(--orange); color:var(--white); }
+  .btn-primary:disabled{ background:#cfc8c1; color:#8a8478; cursor:not-allowed; }
+  .btn-ghost{
+    background:transparent; color:var(--navy); font-size:13px; font-weight:600;
+    padding:10px; text-decoration:underline; text-underline-offset:3px;
+  }
+
+  /* ---- Pantalla home ---- */
+  .saludo{ font-size:15px; color:#6b7680; margin:0 0 2px; }
+  .saludo strong{ color:var(--ink); }
+
+  .ventana{
+    display:flex; align-items:center; gap:14px;
+    background:var(--warm-gray);
+    border-radius:16px;
+    padding:16px 16px;
+    margin:18px 0 22px;
+  }
+  .ring{ position:relative; width:56px; height:56px; flex:none; }
+  .ring svg{ width:56px; height:56px; transform:rotate(-90deg); }
+  .ring circle{ fill:none; stroke-width:5; }
+  .ring .bg{ stroke:#ddd5cc; }
+  .ring .fg{ stroke:var(--teal); stroke-linecap:round; transition:stroke-dashoffset .4s; }
+  .ring .icon{
+    position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
+    font-size:20px;
+  }
+  .ventana-info .tipo{ font-weight:800; font-size:16px; color:var(--navy); }
+  .ventana-info .rango{ font-size:12.5px; color:#7a8288; }
+  .ventana-info .rango.mono{ letter-spacing:.02em; }
+
+  .estado-marcado{
+    display:flex; align-items:center; gap:10px;
+    background:#eaf3e1; border:1.5px solid #cfe3ba;
+    border-radius:14px; padding:14px 16px; margin-top:6px;
+    color:#4a6019; font-weight:600; font-size:14px;
+  }
+  .estado-marcado .check{
+    width:26px; height:26px; border-radius:50%; background:var(--green);
+    color:white; display:flex; align-items:center; justify-content:center;
+    font-size:14px; flex:none;
+  }
+
+  .fuera-horario{
+    text-align:center; padding:10px 4px 4px;
+    color:#7a8288; font-size:14px; line-height:1.5;
+  }
+  .fuera-horario .prox{ color:var(--navy); font-weight:700; }
+
+  .pendiente-badge{
+    display:inline-flex; align-items:center; gap:6px;
+    font-size:11.5px; color:#a3651e; background:#fbeedc;
+    padding:5px 10px; border-radius:20px; margin-top:14px; font-weight:600;
+  }
+  .pendiente-badge .dot{
+    width:6px; height:6px; border-radius:50%; background:#e6952c;
+    animation:pulse 1.3s infinite;
+  }
+  @keyframes pulse{ 0%,100%{opacity:1;} 50%{opacity:.35;} }
+
+  .footer-row{
+    display:flex; justify-content:space-between; align-items:center;
+    margin-top:20px; padding-top:14px; border-top:1px solid #f0ede9;
+  }
+  .footer-row .centro{ font-size:11.5px; color:#a3a09a; }
+
+  .hidden{ display:none !important; }
+</style>
+</head>
+<body>
+
+<div class="card" id="app"></div>
+
+<script>
+/* ============ CONFIG ============ */
+const CONFIG = {
+  // Reemplaza esto con la URL /exec de tu Google Apps Script Web App (ver Code.gs)
+  GAS_ENDPOINT: "PEGA_AQUI_TU_URL_DE_APPS_SCRIPT",
+  CENTRO: "Casino Melinka",
+  COMIDAS: {
+    almuerzo: { inicio: "12:00", fin: "15:00", label: "Almuerzo", icon: "☀️" },
+    cena:     { inicio: "19:00", fin: "22:00", label: "Cena",     icon: "🌙" }
+  },
+  GRACIA_MIN: 20,          // minutos antes de la ventana en que ya se puede marcar
+  SYNC_INTERVAL_MS: 30000  // reintento de sincronización si hay marcajes pendientes
+};
+
+/* ============ Utilidades de tiempo ============ */
+function pad(n){ return n.toString().padStart(2,'0'); }
+function hoy(){ const d=new Date(); return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`; }
+function horaActual(){ const d=new Date(); return `${pad(d.getHours())}:${pad(d.getMinutes())}`; }
+function aMinutos(hhmm){ const [h,m]=hhmm.split(':').map(Number); return h*60+m; }
+
+function comidaActual(){
+  const nowMin = aMinutos(horaActual());
+  for (const [key, c] of Object.entries(CONFIG.COMIDAS)){
+    const iniGracia = aMinutos(c.inicio) - CONFIG.GRACIA_MIN;
+    const fin = aMinutos(c.fin);
+    if (nowMin >= iniGracia && nowMin <= fin){
+      const totalVentana = fin - iniGracia;
+      const transcurrido = nowMin - iniGracia;
+      return { key, ...c, progreso: Math.min(1, transcurrido/totalVentana) };
+    }
+  }
+  return null;
+}
+
+function proximaComida(){
+  const nowMin = aMinutos(horaActual());
+  const entries = Object.entries(CONFIG.COMIDAS);
+  for (const [key,c] of entries){
+    if (aMinutos(c.inicio) - CONFIG.GRACIA_MIN > nowMin) return {key,...c};
+  }
+  return { key: entries[0][0], ...entries[0][1], manana:true };
+}
+
+/* ============ RUT chileno (validación módulo 11) ============ */
+function limpiarRut(raw){ return raw.replace(/[^0-9kK]/g,'').toUpperCase(); }
+function validarRut(raw){
+  const rut = limpiarRut(raw);
+  if (rut.length < 2) return false;
+  const cuerpo = rut.slice(0,-1);
+  const dv = rut.slice(-1);
+  let suma=0, mult=2;
+  for (let i=cuerpo.length-1; i>=0; i--){
+    suma += parseInt(cuerpo[i],10)*mult;
+    mult = mult<7 ? mult+1 : 2;
+  }
+  const resto = 11 - (suma%11);
+  const dvEsperado = resto===11?'0':resto===10?'K':String(resto);
+  return dv===dvEsperado;
+}
+function formatearRut(raw){
+  const rut = limpiarRut(raw);
+  const cuerpo = rut.slice(0,-1);
+  const dv = rut.slice(-1);
+  let out='';
+  for (let i=cuerpo.length-1, c=0; i>=0; i--, c++){
+    out = cuerpo[i]+out;
+    if (c%3===2 && i!==0) out='.'+out;
+  }
+  return out+'-'+dv;
+}
+
+/* ============ Persistencia local ============ */
+const LS_USER = 'marcaje_user';
+const LS_MARCAS_HOY = 'marcaje_marcas_'+hoy();
+const LS_PENDIENTES = 'marcaje_pendientes';
+
+function getUser(){ try{ return JSON.parse(localStorage.getItem(LS_USER)); }catch(e){ return null; } }
+function setUser(u){ localStorage.setItem(LS_USER, JSON.stringify(u)); }
+function clearUser(){ localStorage.removeItem(LS_USER); }
+
+function getMarcasHoy(){ try{ return JSON.parse(localStorage.getItem(LS_MARCAS_HOY))||{}; }catch(e){ return {}; } }
+function setMarcaHoy(tipo, hora){
+  const m = getMarcasHoy(); m[tipo]=hora;
+  localStorage.setItem(LS_MARCAS_HOY, JSON.stringify(m));
+}
+
+function getPendientes(){ try{ return JSON.parse(localStorage.getItem(LS_PENDIENTES))||[]; }catch(e){ return []; } }
+function setPendientes(arr){ localStorage.setItem(LS_PENDIENTES, JSON.stringify(arr)); }
+function agregarPendiente(payload){
+  const arr = getPendientes(); arr.push(payload); setPendientes(arr);
+}
+
+/* ============ Envío al backend (Apps Script) ============ */
+async function enviarMarcaje(payload){
+  if (CONFIG.GAS_ENDPOINT.includes('PEGA_AQUI')){
+    // Sin backend configurado: simula éxito para poder probar la UI
+    return { status: 'ok', simulado: true };
+  }
+  const res = await fetch(CONFIG.GAS_ENDPOINT, {
+    method: 'POST',
+    headers: { 'Content-Type': 'text/plain;charset=utf-8' }, // evita preflight CORS
+    body: JSON.stringify(payload)
+  });
+  return await res.json();
+}
+
+async function sincronizarPendientes(){
+  let pendientes = getPendientes();
+  if (pendientes.length === 0) return;
+  const restantes = [];
+  for (const p of pendientes){
+    try{
+      const r = await enviarMarcaje(p);
+      if (!(r.status === 'ok' || r.status === 'duplicado')) restantes.push(p);
+    }catch(e){ restantes.push(p); }
+  }
+  setPendientes(restantes);
+  render();
+}
+
+/* ============ Render ============ */
+const app = document.getElementById('app');
+
+function render(){
+  const user = getUser();
+  app.innerHTML = user ? homeHTML(user) : registroHTML();
+  wireEvents(user);
+}
+
+function wireEvents(user){
+  if (!user){
+    const form = document.getElementById('form-registro');
+    form.addEventListener('submit', onSubmitRegistro);
+    return;
+  }
+  const btn = document.getElementById('btn-marcar');
+  if (btn) btn.addEventListener('click', () => onMarcar(user));
+  const cambiar = document.getElementById('link-cambiar');
+  if (cambiar) cambiar.addEventListener('click', (e) => {
+    e.preventDefault();
+    if (confirm('¿Cambiar de usuario en este dispositivo?')){
+      clearUser(); render();
+    }
+  });
+}
+
+function registroHTML(){
+  return `
+    <header class="top">
+      <div class="brand">AquaChile · ${CONFIG.CENTRO}</div>
+      <h1>Registro de comensal</h1>
+    </header>
+    <div class="body-pad">
+      <form id="form-registro" novalidate>
+        <div class="field" id="field-rut">
+          <label for="rut">RUT (opcional)</label>
+          <input id="rut" name="rut" inputmode="text" placeholder="12.345.678-9" autocomplete="off">
+          <div class="err">RUT no válido, revisa el número.</div>
+        </div>
+        <div class="field" id="field-nombre">
+          <label for="nombre">Nombre completo</label>
+          <input id="nombre" name="nombre" placeholder="Nombre y apellido" autocomplete="off">
+          <div class="err">Ingresa tu nombre.</div>
+        </div>
+        <div class="field" id="field-centro">
+          <label for="centroBase">Centro / Base</label>
+          <input id="centroBase" name="centroBase" list="lista-centros" placeholder="Ej: Valverde 2, Base Pacifico..." autocomplete="off">
+          <datalist id="lista-centros">
+            <option value="Melinka">
+            <option value="Puerto Montt">
+          </datalist>
+          <div class="err">Indica tu centro o base.</div>
+        </div>
+        <label class="check-field" for="servicioExterno">
+          <input type="checkbox" id="servicioExterno" name="servicioExterno">
+          <span class="txt">
+            <strong>Servicio externo</strong>
+            <span>Marca si eres de una empresa contratista, no personal AquaChile</span>
+          </span>
+        </label>
+        <button type="submit" class="btn btn-primary">Continuar</button>
+      </form>
+    </div>
+  `;
+}
+
+function onSubmitRegistro(e){
+  e.preventDefault();
+  const rutInput = document.getElementById('rut');
+  const nombreInput = document.getElementById('nombre');
+  const centroInput = document.getElementById('centroBase');
+  const externoInput = document.getElementById('servicioExterno');
+  const rutField = document.getElementById('field-rut');
+  const nombreField = document.getElementById('field-nombre');
+  const centroField = document.getElementById('field-centro');
+
+  const rutVacio = rutInput.value.trim().length === 0;
+  const rutOk = rutVacio || validarRut(rutInput.value); // RUT es opcional
+  const nombreOk = nombreInput.value.trim().length >= 3;
+  const centroOk = centroInput.value.trim().length >= 2;
+
+  rutField.classList.toggle('invalid', !rutOk);
+  nombreField.classList.toggle('invalid', !nombreOk);
+  centroField.classList.toggle('invalid', !centroOk);
+  if (!rutOk || !nombreOk || !centroOk) return;
+
+  setUser({
+    rut: rutVacio ? '' : formatearRut(rutInput.value),
+    nombre: nombreInput.value.trim(),
+    centroBase: centroInput.value.trim(),
+    servicioExterno: externoInput.checked
+  });
+  render();
+}
+
+function homeHTML(user){
+  const marcasHoy = getMarcasHoy();
+  const pendientes = getPendientes();
+  const c = comidaActual();
+
+  let bloqueVentana;
+  if (c){
+    const yaMarcado = marcasHoy[c.key];
+    const pct = Math.round(c.progreso*100);
+    const circunf = 2*Math.PI*23;
+    const offset = circunf*(1-c.progreso);
+
+    bloqueVentana = `
+      <div class="ventana">
+        <div class="ring">
+          <svg viewBox="0 0 56 56">
+            <circle class="bg" cx="28" cy="28" r="23"></circle>
+            <circle class="fg" cx="28" cy="28" r="23" stroke-dasharray="${circunf}" stroke-dashoffset="${offset}"></circle>
+          </svg>
+          <div class="icon">${c.icon}</div>
+        </div>
+        <div class="ventana-info">
+          <div class="tipo">${c.label}</div>
+          <div class="rango mono">${c.inicio} – ${c.fin}</div>
+        </div>
+      </div>
+      ${ yaMarcado
+        ? `<div class="estado-marcado"><span class="check">✓</span> ${c.label} registrado a las ${yaMarcado}</div>`
+        : `<button id="btn-marcar" class="btn btn-primary">Marcar ${c.label}</button>`
+      }
+    `;
+  } else {
+    const prox = proximaComida();
+    bloqueVentana = `
+      <div class="fuera-horario">
+        Fuera del horario de marcaje.<br>
+        Próxima ventana: <span class="prox">${prox.label} ${prox.inicio}${prox.manana ? ' (mañana)' : ''}</span>
+      </div>
+    `;
+  }
+
+  const badgePendientes = pendientes.length > 0
+    ? `<div class="pendiente-badge"><span class="dot"></span> ${pendientes.length} marcaje(s) sin sincronizar</div>`
+    : '';
+
+  return `
+    <header class="top">
+      <div class="brand">AquaChile · ${CONFIG.CENTRO}</div>
+      <h1>Marcaje de comedor</h1>
+    </header>
+    <div class="body-pad">
+      <p class="saludo">Hola, <strong>${user.nombre.split(' ')[0]}</strong> · ${user.centroBase}${user.rut ? ' · '+user.rut : ''}${user.servicioExterno ? '<span class="badge-externo">Externo</span>' : ''}</p>
+      ${bloqueVentana}
+      ${badgePendientes}
+      <div class="footer-row">
+        <span class="centro mono">${hoy()}</span>
+        <a href="#" id="link-cambiar" class="btn-ghost">Cambiar usuario</a>
+      </div>
+    </div>
+  `;
+}
+
+async function onMarcar(user){
+  const c = comidaActual();
+  if (!c) return;
+  const btn = document.getElementById('btn-marcar');
+  btn.disabled = true;
+  btn.textContent = 'Enviando...';
+
+  const ahora = horaActual();
+  const payload = {
+    rut: user.rut || '',
+    nombre: user.nombre,
+    centroBase: user.centroBase,
+    servicioExterno: !!user.servicioExterno,
+    tipo: c.key,
+    centroCasino: CONFIG.CENTRO,
+    fecha: hoy(),
+    hora: ahora,
+    timestamp: new Date().toISOString()
+  };
+
+  try{
+    const r = await enviarMarcaje(payload);
+    if (r.status === 'ok' || r.status === 'duplicado'){
+      setMarcaHoy(c.key, ahora);
+    } else {
+      agregarPendiente(payload);
+    }
+  }catch(e){
+    agregarPendiente(payload);
+    setMarcaHoy(c.key, ahora); // optimista: evita doble click mientras no hay señal
+  }
+  render();
+}
+
+/* ============ Init ============ */
+render();
+window.addEventListener('online', sincronizarPendientes);
+setInterval(sincronizarPendientes, CONFIG.SYNC_INTERVAL_MS);
+sincronizarPendientes();
+</script>
+</body>
+</html>
