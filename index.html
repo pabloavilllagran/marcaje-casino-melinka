@@ -215,11 +215,24 @@
   .footer-row .centro{ font-size:11.5px; color:#a3a09a; }
 
   .hidden{ display:none !important; }
+
+  /* admin corner link */
+  .admin-link{
+    position:fixed;bottom:18px;right:18px;
+    font-size:11px;color:rgba(100,116,130,.5);
+    text-decoration:none;font-weight:500;
+    letter-spacing:.02em;
+    transition:color .2s;
+    z-index:50;
+  }
+  .admin-link:hover{color:rgba(100,116,130,.9);}
 </style>
 </head>
 <body>
 
 <div class="card" id="app"></div>
+
+<a href="dashboard.html" class="admin-link" title="Acceso restringido">Ingreso administrador</a>
 
 <script>
 /* ============ CONFIG ============ */
@@ -494,10 +507,7 @@ function homeHTML(user){
       ${badgePendientes}
       <div class="footer-row">
         <span class="centro mono">${hoy()}</span>
-        <div style="display:flex;gap:8px;align-items:center;">
-          <a href="dashboard.html" class="btn-ghost" style="font-size:11.5px;opacity:.7">📊 Dashboard</a>
-          <a href="#" id="link-cambiar" class="btn-ghost">Cambiar usuario</a>
-        </div>
+        <a href="#" id="link-cambiar" class="btn-ghost">Cambiar usuario</a>
       </div>
     </div>
   `;
